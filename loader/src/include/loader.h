@@ -1,0 +1,9 @@
+#define UNCOMPRESS_OUT  0x80000000
+
+#define STACK_START 	0x80
+#define STACK_END 		0x80
+
+#define IO_BASE 		0xB8000000
+
+#define UART_THR		0x2000	
+#define UART_LSR		0x2014

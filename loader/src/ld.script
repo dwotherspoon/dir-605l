@@ -1,0 +1,34 @@
+OUTPUT_ARCH(mips)
+ENTRY(__init)
+
+SECTIONS {
+
+	. = 0x80500000;
+	.text : { *(.text) }
+	.rodata : { *(.rodata) }
+
+	. = ALIGN(4);
+
+	/* vmlinux */
+	.data : {
+		_fdata = .;
+		*(.data);
+		. = ALIGN(1024);
+		__vmlinux_start = . ;
+		*(.vmlinux);
+		__vmlinux_end = . ;
+		. = ALIGN(1024);
+	}
+
+	/* ETC */
+	.bss : {
+		_bstart = . ;
+		*(.bss);
+		*(.sbss);
+		*(COMMON);
+		_bend = . ;
+	} 
+
+	/DISCARD/ : { *(.reginfo) ;  *(.note) ; *(.comment) *(__ex_table) ; }
+}
+

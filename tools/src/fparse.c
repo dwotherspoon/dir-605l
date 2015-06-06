@@ -38,6 +38,7 @@ int main(int argc, char * argv[]) {
 	unsigned long size;
 	uint8_t * buf = NULL;
 	char outname[] = "1234.bin";
+	uint16_t csum;
 
 	if (argc != 2) {
 		puts("Usage: fparse <file>");
@@ -80,7 +81,13 @@ int main(int argc, char * argv[]) {
 			fwrite(buf, 1, iheader.len, fout);
 			fclose(fout);
 			// Get the checksum...
-			printf("Checksum: 0x%x\n", checksum(buf, iheader.len));
+			csum = checksum(buf, iheader.len);
+			if (csum != 0) {
+				// Subtract last two bytes
+				csum -=  buf[iheader.len - 2] << 8;
+				csum -= buf[iheader.len - 1];
+				printf("Checksum should be 0x%x\n", ~(csum) + 1);	
+			}
 			printf("Checking for next block at 0x%lx\n", ftell(fp));
 		}
 		puts("EOF");
