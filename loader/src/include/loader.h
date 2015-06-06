@@ -1,7 +1,7 @@
+#define LOADER_START 0x80500000
 #define UNCOMPRESS_OUT  0x80000000
 
-#define STACK_START 	0x80
-#define STACK_END 		0x80
+#define STACK_SIZE 0x1000
 
 #define IO_BASE 		0xB8000000
 

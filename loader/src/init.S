@@ -1,16 +1,26 @@
 #include <regs.h>
+#include <loader.h>
 
-/* This is the entry point to the loader. TODO: move the stack, and clear bss before jumping into main.c */
+/* 
+	This is the entry point to the loader. 
+	N.B. Top of stack is STACK_SIZE above .bss
+	TODO: Zero BSS and maybe stack.
+*/
 
 .text
 
 .globl __init
 
 __init:
+	la s0, __bstart
+	la s1, __bend
+	nop
+	addi s1, STACK_SIZE 
+	move sp, s1
 	j main
 	nop
 
-/* Enter into kernel (address in a0), zero all arg registers. */
+/* Enter into kernel (address in a0), zero arg registers. */
 
 .globl start_kernel
 

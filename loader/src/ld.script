@@ -22,11 +22,11 @@ SECTIONS {
 
 	/* ETC */
 	.bss : {
-		_bstart = . ;
+		__bstart = . ;
 		*(.bss);
 		*(.sbss);
 		*(COMMON);
-		_bend = . ;
+		__bend = . ;
 	} 
 
 	/DISCARD/ : { *(.reginfo) ;  *(.note) ; *(.comment) *(__ex_table) ; }

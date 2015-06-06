@@ -17,3 +17,16 @@ void tty_print(char * c) {
 		putc(*c++);
 	}
 }
+
+/* Debugging use: print a 32bit value */
+void tty_print_hex(unsigned h) {
+	unsigned char c, v;
+	tty_print("0x");
+	for (c = 0; c < 8; c++) {
+		v = h >> (28 - (c << 2));
+		v &= 0x0f;
+		if (v > 9) putc(v + 'a' - 10);
+		else putc(v + '0');
+	}
+	tty_print("\r\n");
+}
