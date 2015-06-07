@@ -69,14 +69,14 @@ void decompress_kernel(unsigned char * output) {
 	len_uncompressed |= input[LZMA_PROPS_SIZE + 2] << 16;
 	len_uncompressed |= input[LZMA_PROPS_SIZE + 3] << 24;
 
-	tty_print("Uncompressed kernel length is ");
-	tty_print_hex(len_uncompressed);
-
-	/* size is 64 bits, we want the upper 32 to be zero */
-	if (input[LZMA_PROPS_SIZE + 4] | input[LZMA_PROPS_SIZE + 5] | input[LZMA_PROPS_SIZE + 6] | input[LZMA_PROPS_SIZE + 7]) {
-		tty_print("Error: Kernel stream is too large.\r\n");
-		while (1);
-	}
+	/* 
+		size is 64 bits, we want the upper 32 to be zero 
+		If all 0xFF, then size is just unknown. Need to handle that.
+	*/
+	// if (input[LZMA_PROPS_SIZE + 4] | input[LZMA_PROPS_SIZE + 5] | input[LZMA_PROPS_SIZE + 6] | input[LZMA_PROPS_SIZE + 7]) {
+	// 	tty_print("Error: Kernel stream is too large.\r\n");
+	// 	while (1);
+	// }
 
 	result = LzmaDecode(
 		output, &len_uncompressed, 
@@ -84,7 +84,9 @@ void decompress_kernel(unsigned char * output) {
 		input, LZMA_PROPS_SIZE,
 		LZMA_FINISH_ANY, &state, &memalloc);
 	/* Could check result here, if needed. */
-	tty_print("Done.\r\n");
+
+	tty_print("Uncompressed kernel length is ");
+	tty_print_hex(len_uncompressed);
 }
 
 
