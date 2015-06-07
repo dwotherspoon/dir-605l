@@ -16,8 +16,8 @@ LDSCRIPT = ld.script
 all: init.o main.o LzmaDec.o vmlinux.o vmlinux_img
 	$(OBJCOPY) --add-section .vmlinux=vmlinux.lzma vmlinux.o
 	$(LD) $(LDFLAGS) -o loader -G 0 -T $(LDSCRIPT) init.o main.o LzmaDec.o vmlinux.o
-	$(OBJCOPY) -Obinary loader rom
-	truncate -s 568322 rom
+	$(OBJCOPY) -Obinary loader rom.bin
+	#truncate -s 568322 rom.bin
 
 vmlinux_img:
 	cp vmlinux vmlinux.img
@@ -27,4 +27,4 @@ vmlinux_img:
 	mv vmlinux.img.lzma vmlinux.lzma
 
 clean:
-	rm -f *.o loader rom vmlinux.img vmlinux.lzma
+	rm -f *.o loader rom.bin vmlinux.img vmlinux.lzma

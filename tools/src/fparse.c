@@ -1,5 +1,6 @@
 /*
-Parse firmware image and extract parts.
+	Parse firmware image and extract parts.
+	Assumes little endian arch.
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -51,7 +52,7 @@ int main(int argc, char * argv[]) {
 
 		while (ftell(fp) < size) {
 			puts("Reading image header.");
-			fread(iheader.signature, 1, 4, fp);
+			fread(iheader.signature, sizeof(char), 4, fp);
 			iheader.signature[4] = '\0';
 
 			fread(&iheader.startAddr, sizeof(uint32_t), 1, fp);
@@ -66,7 +67,7 @@ int main(int argc, char * argv[]) {
 			printf("Signature: %s\n", iheader.signature);
 			printf("Start address: 0x%x\n", iheader.startAddr);
 			printf("Burn address: 0x%x\n", iheader.burnAddr);
-			printf("Data length: %u bytes\n", iheader.len);
+			printf("Data length: 0x%x bytes\n", iheader.len);
 			// Dump to file.
 			free(buf);
 			buf = malloc(iheader.len);
